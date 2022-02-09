@@ -1,5 +1,5 @@
 
-.Overlay {
+.overlay {
     position: fixed;
     top: 0;
     left: 0;
@@ -12,7 +12,7 @@
     z-index: 1200;
   }
   
-  .Modal {
+  .modal {
     max-width: calc(100vw - 48px);
     max-height: calc(100vh - 24px);
   }
