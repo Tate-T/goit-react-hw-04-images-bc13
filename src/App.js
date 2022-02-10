@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import s from './App.css';
 import Searchbar from './components/Searchbar/Searchbar';
-// import Loader from './components/Loader/Loader';
-import Button from './components/Button/Button';
+import Loader from './components/Loader/Loader';
 import Modal from './components/Modal/Modal';
 import ImageGallery from './components/ImageGallery/ImageGallery';
 
@@ -23,9 +22,8 @@ class App extends Component {
       <div className={s.app} >
         <Searchbar />
         <ImageGallery />
-        {/* <Loader /> */}
-        <Button toggleModal={this.toggleModal} />
-        {showModal && <Modal />}
+        {showModal && <Modal onClose={this.toggleModal} />}
+        <Loader />
       </div>
     );
   }

@@ -1,13 +1,37 @@
+import { Component } from 'react';
 import s from './Modal.module.css';
 
-const Modal = () => {
-    return (
-        <div className={s.overlay}>
-            <div className={s.modal}>
-                <img src="" alt="" />
+class Modal extends Component {
+
+    componentDidMount() {
+        window.addEventListener("keydown", this.handleKeyDown)
+    }
+
+    componentWillUnmount() {
+        window.removeEventListener('keydown', this.handleKeyDown)
+    }
+
+    handleKeyDown = e => {
+        if (e.code === 'Escape') {
+            this.props.onClose()
+        }
+    }
+
+    handleBackDropClick = (e) => {
+        if (e.currentTarget === e.target) {
+            this.props.onClose();
+        }
+    };
+
+    render() {
+        return (
+            <div className={s.overlay} onClick={this.handleBackDropClick} >
+                <div className={s.modal}>
+                    <img src="" alt="" />
+                </div>
             </div>
-        </div>
-    )
+        )
+    }
 }
 
 export default Modal
