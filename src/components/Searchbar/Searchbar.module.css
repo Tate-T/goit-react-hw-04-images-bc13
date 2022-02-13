@@ -31,12 +31,12 @@
     padding: 8px;
   }
   
-  /* .button {
+  .button {
     display: inline-block;
     width: 48px;
     height: 48px;
     border: 0;
-    background-image: url('https://upload.wikimedia.org/wikipedia/commons/5/55/Magnifying_glass_icon.svg');
+    /* background-image: url('https://image.flaticon.com/icons/svg/149/149852.svg'); */
     background-size: 40%;
     background-repeat: no-repeat;
     background-position: center;
@@ -50,7 +50,7 @@
     opacity: 1;
   }
   
-  .button__label {
+  /* .button__label {
     position: absolute;
     width: 1px;
     height: 1px;
