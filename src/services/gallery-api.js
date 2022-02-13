@@ -11,8 +11,6 @@ const fetchGallery = (galleryImgName, page) => {
         })
 };
 
-const api = {
-    fetchGallery,
-}
+const api = { fetchGallery }
 
 export default api

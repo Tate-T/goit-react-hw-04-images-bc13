@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import s from './App.css';
 // import { ToastContainer } from 'react-toastify';
 import Searchbar from './components/Searchbar/Searchbar';
-import LoaderBtn from './components/LoaderBtn/LoaderBtn';
+import Button from './components/Button/Button';
+// import LoaderSpinner from './components/Loader/Loader';
 import Modal from './components/Modal/Modal';
 import ImageGallery from './components/ImageGallery/ImageGallery';
 import ImageGalleryItem from './components/ImageGallery/ImageGalleryItem/ImageGalleryItem';
@@ -11,7 +12,7 @@ import galleryAPI from './services/gallery-api';
 class App extends Component {
   state = {
     galleryImgName: '',
-    gallery: null,
+    gallery: [],
     largeImageURL: '',
     currentPage: 1,
     loading: false,
@@ -33,10 +34,14 @@ class App extends Component {
   //   }, 1000)
   // }
 
+  componentDidMount() {
+    this.setState({ loading: true, gallery: null });
+    this.fetchGallery();
+  }
 
   componentDidUpdate(prevState) {
     if (prevState.galleryImgName !== this.state.galleryImgName) {
-      this.setState({ loading: true, gallery: null });
+      this.setState({ loading: true });
       // this.setState({ status: 'pending' });
       galleryAPI
         .fetchGallery(this.state.galleryImgName, this.state.currentPage)
@@ -73,6 +78,11 @@ class App extends Component {
     })
   }
 
+  showLoadMore = () => {
+    const { total, page } = this.state;
+    return Math.ceil(total / 12) !== page - 1;
+  };
+
   onClickImage = largeImageURL => {
     this.togleModal();
     this.setState({ largeImageURL: largeImageURL });
@@ -86,7 +96,7 @@ class App extends Component {
 
   render() {
     const { gallery, galleryImgName, showModal, loading, error } = this.state;
-
+    const showLoadMore = this.showLoadMore();
     // if (this.state.status === 'idle') {
     //   return <div>Enter image-name</div>
     // }
@@ -107,7 +117,7 @@ class App extends Component {
       <div className={s.app} >
         <Searchbar findImg={this.handleSearchSubmit} />
         {error && <h1>{error.message}</h1>}
-        {gallery &&
+        {gallery.length > 0 &&
           (<ImageGallery galleryImgName={galleryImgName} >
             {this.state.gallery.map(img =>
             (<ImageGalleryItem
@@ -117,7 +127,10 @@ class App extends Component {
               onClick={this.onClickImage} />))}
           </ImageGallery>)}
         {showModal && <Modal URL={this.state.largeImageURL} onClose={this.toggleModal} />}
-        {loading && <LoaderBtn onClickHandler={this.fetchGallery} />}
+        {gallery.length > 0 && !loading && showLoadMore && (
+          <Button onClickHandler={this.fetchGallery} />
+        )}
+        {/* {loading && <LoaderSpinner />} */}
         {/* <ToastContainer position="top-right"
             autoClose={3000}
             hideProgressBar={false}
