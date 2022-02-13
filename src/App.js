@@ -16,6 +16,10 @@ class App extends Component {
     }))
   }
 
+  onclickBtn = () => {
+    console.log("sgs");
+  }
+
   render() {
     const { showModal } = this.state;
     return (
