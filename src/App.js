@@ -116,7 +116,7 @@ const App = () => {
 
   const onClickImage = largeImageURL => {
     setLargeImageURL(largeImageURL);
-    this.toggleModal();
+    toggleModal();
   };
 
   const toggleModal = () => {
