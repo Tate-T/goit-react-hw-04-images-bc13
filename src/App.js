@@ -21,6 +21,8 @@ const App = () => {
   const [error, setError] = useState(null);
   const [showModal, setShowModal] = useState(false);
 
+  // ==== Варіант без useCallback ========
+
   // useEffect(() => {
   //     const galleryRendrer = () => {
   //       setIoading({ loading: true });
