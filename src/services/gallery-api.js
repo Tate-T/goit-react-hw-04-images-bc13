@@ -4,7 +4,6 @@ const baseURL = 'https://pixabay.com/api/';
 const fetchGallery = async (galleryImgName, page) => {
     return await fetch(`${baseURL}?q=${galleryImgName}&page=${page}&key=${APIKEY}&image_type=photo&orientation=horizontal&per_page=12`)
         .then(res => {
-            console.log(res);
             if (res.ok) {
                 return res.json();
             }

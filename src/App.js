@@ -60,7 +60,6 @@ class App extends Component {
             `По запросу ${this.state.galleryImgName} ничего не найдено!`,
           );
         }
-        console.log(res.hits);
         this.setState((prevState) => ({
           gallery:
             this.state.page === 1
