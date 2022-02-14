@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import s from './App.css';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -21,44 +21,81 @@ const App = () => {
   const [error, setError] = useState(null);
   const [showModal, setShowModal] = useState(false);
 
+  // useEffect(() => {
+  //     const galleryRendrer = () => {
+  //       setIoading({ loading: true });
+  //       // this.setState({ status: 'pending' });
+  //       galleryAPI
+  //         .fetchGallery(galleryImgName, page)
+  //         // .then(gallery => this.setState({ gallery, status: 'resolved' }))
+  //         .then((res) => {
+  //           if (res.totalHits === 0) {
+  //             throw new Error(
+  //               `По запросу ${galleryImgName} ничего не найдено!`,
+  //             );
+  //           }
+
+  //           setGallery(prev =>
+  //             page === 1
+  //               ? res.hits
+  //               : [...prev, ...res.hits],
+  //           );
+
+  //           setTotal(res.totalHits);
+
+  //           scroll();
+  //         })
+  //         .catch(error => setError({ error }))
+  //         // .catch(error => this.setState({ error, status: 'rejected' }))
+  //         .finally(() => setIoading(false));
+  //     }
+
+  //     galleryRendrer()
+
+  //     if (page > 1) {
+  //       window.scrollTo({
+  //         top: document.documentElement.scrollHeight,
+  //         behavior: 'smooth'
+  //       });
+  //     }
+  //   }, [galleryImgName, page])
+
+  const galleryRendrer = useCallback(
+    () => {
+      setIoading({ loading: true });
+      galleryAPI
+        .fetchGallery(galleryImgName, page)
+        .then((res) => {
+          if (res.totalHits === 0) {
+            throw new Error(
+              `По запросу ${galleryImgName} ничего не найдено!`,
+            );
+          }
+
+          setGallery(prev =>
+            page === 1
+              ? res.hits
+              : [...prev, ...res.hits],
+          );
+
+          setTotal(res.totalHits);
+
+        })
+        .catch(error => setError({ error }))
+        .finally(() => setIoading(false));
+
+      if (page > 1) {
+        scroll();
+      }
+
+    },
+    [galleryImgName, page],
+  )
+
   useEffect(() => {
     galleryRendrer()
 
-    if (page > 1) {
-      window.scrollTo({
-        top: document.documentElement.scrollHeight,
-        behavior: 'smooth'
-      });
-    }
-  }, [galleryImgName, page])
-
-  const galleryRendrer = () => {
-    setIoading({ loading: true });
-    // this.setState({ status: 'pending' });
-    galleryAPI
-      .fetchGallery(galleryImgName, page)
-      // .then(gallery => this.setState({ gallery, status: 'resolved' }))
-      .then((res) => {
-        if (res.totalHits === 0) {
-          throw new Error(
-            `По запросу ${galleryImgName} ничего не найдено!`,
-          );
-        }
-
-        setGallery(
-          page === 1
-            ? res.hits
-            : [...gallery, ...res.hits],
-        );
-
-        setTotal(res.totalHits);
-
-        scroll();
-      })
-      .catch(error => setError({ error }))
-      // .catch(error => this.setState({ error, status: 'rejected' }))
-      .finally(() => setIoading(false));
-  }
+  }, [galleryRendrer])
 
   const handleSearchSubmit = galleryImgName => {
     setGalleryImgName(galleryImgName)
@@ -83,8 +120,8 @@ const App = () => {
   };
 
   const toggleModal = () => {
-    setShowModal(({ showModal }) => (!showModal))
-  }
+    setShowModal(!showModal)
+  };
 
   const handlePageIncr = () => {
     setPage(page + 1);

@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import { useState } from 'react';
 import { ReactComponent as LoupeIcon } from '../../icons/loupe.svg';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -6,51 +6,49 @@ import PropTypes from 'prop-types';
 import s from './Searchbar.module.css';
 
 
-export default class Searchbar extends Component {
-    state = {
-        galleryImgName: '',
+const Searchbar = ({ findImg }) => {
+    const [galleryImgName, setGalleryImgName] = useState('');
+
+    const handleNameChange = e => {
+        setGalleryImgName(e.currentTarget.value.toLowerCase())
     };
 
-    handleNameChange = e => {
-        this.setState({ galleryImgName: e.currentTarget.value.toLowerCase() })
-    };
-
-    handleSubmit = e => {
+    const handleSubmit = e => {
         e.preventDefault();
-        if (this.state.galleryImgName.trim() === '') {
+        if (galleryImgName.trim() === '') {
             // alert('Enter the name of image');
             toast.info('Enter the name of image');
             return
         }
 
-        this.props.findImg(this.state.galleryImgName);
-        this.setState({ galleryImgName: '' });
+        findImg(galleryImgName);
+        setGalleryImgName('');
     };
 
-    render() {
-        return (
-            <header className={s.searchbar} >
-                <form className={s.form} onSubmit={this.handleSubmit}>
+    return (
+        <header className={s.searchbar} >
+            <form className={s.form} onSubmit={handleSubmit}>
 
-                    <button type="submit" className={s.button}>
-                        <LoupeIcon className={s.loupeIcon} width="40" height="40" fill="grey" />
-                    </button >
+                <button type="submit" className={s.button}>
+                    <LoupeIcon className={s.loupeIcon} width="40" height="40" fill="grey" />
+                </button >
 
-                    <input
-                        className={s.input}
-                        type="text"
-                        autoComplete="off"
-                        autoFocus
-                        placeholder="Search images and photos"
-                        value={this.state.galleryImgName}
-                        onChange={this.handleNameChange}
-                    />
-                </form >
-            </header >
-        )
-    }
+                <input
+                    className={s.input}
+                    type="text"
+                    autoComplete="off"
+                    autoFocus
+                    placeholder="Search images and photos"
+                    value={galleryImgName}
+                    onChange={handleNameChange}
+                />
+            </form >
+        </header >
+    )
 }
 
 Searchbar.propTypes = {
     onclick: PropTypes.func
 }
+
+export default Searchbar
