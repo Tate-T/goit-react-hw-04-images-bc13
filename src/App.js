@@ -3,7 +3,7 @@ import s from './App.css';
 // import { ToastContainer } from 'react-toastify';
 import Searchbar from './components/Searchbar/Searchbar';
 import Button from './components/Button/Button';
-// import LoaderSpinner from './components/Loader/Loader';
+import LoaderSpinner from './components/Loader/Loader';
 import Modal from './components/Modal/Modal';
 import ImageGallery from './components/ImageGallery/ImageGallery';
 import ImageGalleryItem from './components/ImageGallery/ImageGalleryItem/ImageGalleryItem';
@@ -14,7 +14,8 @@ class App extends Component {
     galleryImgName: '',
     gallery: [],
     largeImageURL: '',
-    currentPage: 1,
+    page: 1,
+    total: 0,
     loading: false,
     error: null,
     showModal: false,
@@ -34,46 +35,54 @@ class App extends Component {
   //   }, 1000)
   // }
 
-  componentDidMount() {
-    this.setState({ loading: true, gallery: null });
-    this.fetchGallery();
+  componentDidUpdate(_, prevState) {
+    if (prevState.galleryImgName !== this.state.galleryImgName || prevState.page !== this.state.page) {
+      this.galleryRendrer()
+    }
+
+    if (this.state.page > 1 && prevState.gallery !== this.state.gallery) {
+      window.scrollTo({
+        top: document.documentElement.scrollHeight,
+        behavior: 'smooth'
+      });
+    }
   }
 
-  componentDidUpdate(prevState) {
-    if (prevState.galleryImgName !== this.state.galleryImgName) {
-      this.setState({ loading: true });
-      // this.setState({ status: 'pending' });
-      galleryAPI
-        .fetchGallery(this.state.galleryImgName, this.state.currentPage)
-        // .then(gallery => this.setState({ gallery, status: 'resolved' }))
-        .then(({ hits, total }) => {
-          if (total === 0) {
-            throw new Error(
-              `По запросу ${this.state.galleryImgName} ничего не найдено!`,
-            );
-          }
-          this.setState(prevState => ({
-            gallery: [...prevState.gallery, ...hits],
-          }));
-          window.scrollTo({
-            top: document.documentElement.offsetHeight,
-            behavior: 'smooth',
-          });
-          this.setState(prevState => ({
-            currentPage: prevState.currentPage + 1,
-          }));
-        })
-        .catch(error => this.setState({ error }))
-        // .catch(error => this.setState({ error, status: 'rejected' }))
-        .finally(() => this.setState({ loading: false }));
-    }
+  galleryRendrer = () => {
+    this.setState({ loading: true });
+    // this.setState({ status: 'pending' });
+    galleryAPI
+      .fetchGallery(this.state.galleryImgName, this.state.page)
+      // .then(gallery => this.setState({ gallery, status: 'resolved' }))
+      .then((res) => {
+        if (res.totalHits === 0) {
+          throw new Error(
+            `По запросу ${this.state.galleryImgName} ничего не найдено!`,
+          );
+        }
+        console.log(res.hits);
+        this.setState((prevState) => ({
+          gallery:
+            this.state.page === 1
+              ? res.hits
+              : [...prevState.gallery, ...res.hits],
+
+          total: res.totalHits,
+
+        }));
+
+        this.scroll();
+      })
+      .catch(error => this.setState({ error }))
+      // .catch(error => this.setState({ error, status: 'rejected' }))
+      .finally(() => this.setState({ loading: false }));
   }
 
   handleSearchSubmit = galleryImgName => {
     this.setState({
       galleryImgName: galleryImgName,
-      gallery: [],
-      currentPage: 1,
+      // gallery: [],
+      page: 1,
       error: null
     })
   }
@@ -83,9 +92,16 @@ class App extends Component {
     return Math.ceil(total / 12) !== page - 1;
   };
 
+  scroll = () => {
+    window.scrollTo({
+      top: document.documentElement.scrollHeight,
+      behavior: "smooth",
+    });
+  };
+
   onClickImage = largeImageURL => {
-    this.togleModal();
     this.setState({ largeImageURL: largeImageURL });
+    this.toggleModal();
   };
 
   toggleModal = () => {
@@ -93,6 +109,10 @@ class App extends Component {
       showModal: !showModal
     }))
   }
+
+  handlePageIncr = () => {
+    this.setState({ page: this.state.page + 1 });
+  };
 
   render() {
     const { gallery, galleryImgName, showModal, loading, error } = this.state;
@@ -122,15 +142,15 @@ class App extends Component {
             {this.state.gallery.map(img =>
             (<ImageGalleryItem
               key={img.id}
-              webformatURL={gallery.webformatURL}
-              largeImageURL={gallery.largeImageURL}
+              webformatURL={img.webformatURL}
+              largeImageURL={img.largeImageURL}
               onClick={this.onClickImage} />))}
           </ImageGallery>)}
         {showModal && <Modal URL={this.state.largeImageURL} onClose={this.toggleModal} />}
         {gallery.length > 0 && !loading && showLoadMore && (
-          <Button onClickHandler={this.fetchGallery} />
+          <Button galleryAppear={this.handlePageIncr} />
         )}
-        {/* {loading && <LoaderSpinner />} */}
+        {loading && <LoaderSpinner />}
         {/* <ToastContainer position="top-right"
             autoClose={3000}
             hideProgressBar={false}

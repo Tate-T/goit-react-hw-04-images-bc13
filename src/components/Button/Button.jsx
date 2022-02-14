@@ -1,8 +1,8 @@
 import s from './Button.module.css';
 
-const Button = ({ onClickHandler }) => {
+const Button = ({ galleryAppear }) => {
     return (
-        <button type="button" onClick={onClickHandler} className={s.button}>Load more</button>
+        <button type="button" onClick={galleryAppear} className={s.button}>Load more</button>
     )
 }
 
