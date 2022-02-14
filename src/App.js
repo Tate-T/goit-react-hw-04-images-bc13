@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import s from './App.css';
-// import { ToastContainer } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import Searchbar from './components/Searchbar/Searchbar';
 import Button from './components/Button/Button';
 import LoaderSpinner from './components/Loader/Loader';
@@ -150,15 +151,13 @@ class App extends Component {
           <Button galleryAppear={this.handlePageIncr} />
         )}
         {loading && <LoaderSpinner />}
-        {/* <ToastContainer position="top-right"
-            autoClose={3000}
-            hideProgressBar={false}
-            newestOnTop={false}
-            closeOnClick
-            rtl={false}
-            pauseOnFocusLoss
-            draggable
-            pauseOnHover /> */}
+        <ToastContainer position="top-right"
+          autoClose={3000}
+          hideProgressBar={false}
+          draggable
+          pauseOnHover
+          theme='colored'
+        />
       </div>
     );
   }

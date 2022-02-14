@@ -1,6 +1,7 @@
 import { Component } from 'react';
 import { ReactComponent as LoupeIcon } from '../../icons/loupe.svg';
-// import { toast } from 'react-toastify';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import PropTypes from 'prop-types';
 import s from './Searchbar.module.css';
 
@@ -17,8 +18,8 @@ export default class Searchbar extends Component {
     handleSubmit = e => {
         e.preventDefault();
         if (this.state.galleryImgName.trim() === '') {
-            alert('Enter the name of image');
-            // toast.info('Enter the name of image');
+            // alert('Enter the name of image');
+            toast.info('Enter the name of image');
             return
         }
 
