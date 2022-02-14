@@ -1,8 +1,8 @@
 {
-  "name": "goit-react-hw-03-image-finder-bc13",
+  "name": "goit-react-hw-04-images-bc13",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://Tate-T.github.io/goit-react-hw-03-image-finder-bc13",
+  "homepage": "https://Tate-T.github.io/goit-react-hw-04-images-bc13",
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.2",
     "@testing-library/react": "^12.1.2",
