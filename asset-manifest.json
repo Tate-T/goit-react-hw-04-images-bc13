@@ -1,14 +1,14 @@
 {
   "files": {
-    "main.css": "/goit-react-hw-03-image-finder-bc13/static/css/main.f8126ffc.css",
-    "main.js": "/goit-react-hw-03-image-finder-bc13/static/js/main.2222361e.js",
-    "index.html": "/goit-react-hw-03-image-finder-bc13/index.html",
-    "static/media/loupe.svg": "/goit-react-hw-03-image-finder-bc13/static/media/loupe.d4d594caeaa640b51cdcb6cf019e54be.svg",
-    "main.f8126ffc.css.map": "/goit-react-hw-03-image-finder-bc13/static/css/main.f8126ffc.css.map",
-    "main.2222361e.js.map": "/goit-react-hw-03-image-finder-bc13/static/js/main.2222361e.js.map"
+    "main.css": "/goit-react-hw-04-images-bc13/static/css/main.3a22407d.css",
+    "main.js": "/goit-react-hw-04-images-bc13/static/js/main.c44042b7.js",
+    "index.html": "/goit-react-hw-04-images-bc13/index.html",
+    "static/media/loupe.svg": "/goit-react-hw-04-images-bc13/static/media/loupe.2d603beaa4c46f945c2ea7de0ec2a9d1.svg",
+    "main.3a22407d.css.map": "/goit-react-hw-04-images-bc13/static/css/main.3a22407d.css.map",
+    "main.c44042b7.js.map": "/goit-react-hw-04-images-bc13/static/js/main.c44042b7.js.map"
   },
   "entrypoints": [
-    "static/css/main.f8126ffc.css",
-    "static/js/main.2222361e.js"
+    "static/css/main.3a22407d.css",
+    "static/js/main.c44042b7.js"
   ]
 }
